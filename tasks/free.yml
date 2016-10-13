@@ -1,0 +1,8 @@
+
+- name: Disable older swap file
+  shell: swapoff /swap/{{ swapfile_cur.stdout|int }}
+
+- name: Remove swap files
+  file:
+    path: '/swap/{{ swapfile_cur.stdout|int }}'
+    state: 'absent'

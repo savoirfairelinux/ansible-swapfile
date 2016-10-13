@@ -1,0 +1,31 @@
+---
+- name: Create new swap file
+  command: fallocate -l {{ (swapfile_size_mb|int * 1024 * 1024) }} /swap/{{ swapfile_size_mb }}
+
+- name: Initialize new swap file
+  command: mkswap /swap/{{ swapfile_size_mb }}
+
+- name: Enforce permissions of new swap file
+  file:
+    path: /swap/{{ swapfile_size_mb }}
+    state: 'file'
+    owner: 'root'
+    group: 'root'
+    mode: '0600'
+
+- name: Enable new swap file
+  command: swapon /swap/{{ swapfile_size_mb }}
+
+- name: Adding new swap file in /etc/fstab
+  mount:
+    src: '/swap/{{ swapfile_size_mb }}'
+    name:   'none'
+    fstype: 'swap'
+    opts:   'sw,nofail,pri=-1'
+    dump:   '0'
+    passno: '0'
+    state:  'present'
+
+- name: Saving the new swap ID into cur file
+  copy: content="{{ swapfile_size_mb }}" dest=/swap/cur
+
