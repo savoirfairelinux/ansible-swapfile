@@ -1,38 +1,16 @@
 ---
-- name: Ensure swap directory for H-A transitions
-  file: path=/swap/ state=directory
-  changed_when: false
-
-- name: Ensure swap caddy for H-A transitions
-  file: path=/swap/cur state=touch
-  changed_when: false
-
-- name: Getting current data about swaps
-  stat: path=/swap/cur
-  register: swapfile_initial_state
-  changed_when: false
-
-- name: Fetching current swap caddy
-  command: cat /swap/cur
-  register: swapfile_caddy_value
-  changed_when: false
-
-- name: Fetching current swap file ID
-  command: cat /swap/cur
-  register: swapfile_cur
-  changed_when: false
-
-- name: Looking which current swapfile used
-  set_fact: swapfile_changed="{{ swapfile_cur.stdout|int != swapfile_size_mb|int }}"
-
-- name: Looking if current swapfile ready
-  stat: path=/swap/{{ swapfile_size_mb }}
-  register: swapfile_ready
+- include: init.yml
+  become: true
+  become_user: root
 
 - include: alloc.yml
-  when: "{{ swapfile_changed or swapfile_ready.stat.exists == false }}"
+  when: "{{ (swapfile_changed or swapfile_ready.stat.exists == false) and swapfile_size_mb|int > 0 }}"
+  become: true
+  become_user: root
 
 - include: free.yml
-  when: "{{ swapfile_changed and (swapfile_initial_state.stat.exists == true and swapfile_caddy_value.stdout|int != 0) }}"
+  when: "{{ (swapfile_changed and ((swapfile_caddy_value.stdout|int == 0 or swapfile_initial_state.stat.exists == true) or (swapfile_size_mb|int == 0 and swapfile_caddy_value.stdout|int != 0))) }}"
+  become: true
+  become_user: root
 
 
