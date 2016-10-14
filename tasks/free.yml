@@ -1,4 +1,4 @@
-
+---
 - name: Saving the new swap ID into cur file
   copy: content="{{ swapfile_size_mb }}" dest={{ swapfile_base_dir }}/cur
 

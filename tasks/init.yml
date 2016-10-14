@@ -1,3 +1,4 @@
+---
 - name: Ensure swap directory for H-A transitions
   file: path={{ swapfile_base_dir }}/ state=directory
   changed_when: false
