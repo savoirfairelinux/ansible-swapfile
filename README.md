@@ -6,9 +6,9 @@ Easily edit and deploy simple SWAP space into your server on the fly with high-a
 How does this works ?
 ------------
 
-You can change install it or change the swap file size whenever you want.
+You can install it or change the swap file size whenever you need without the need of rebooting.
 
-When you change the size of swap (or install the role) there's what happens :
+When you change the size of swap (or install the role then provision) there's what happens :
 
  1. Creates new swap file with the new specified size, then enable it
  2. Transfert the old swap file contents to the new one
