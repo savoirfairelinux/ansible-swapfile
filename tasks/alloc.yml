@@ -1,6 +1,6 @@
 ---
 - name: Create new swap file
-  command: "fallocate -l {{ ((1 + swapfile_size_mb|int) * 1024 * 1024) }} {{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
+  command: "fallocate -l {{ (1 + swapfile_size_mb|int) * 1024 * 1024 }} {{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
 
 - name: Initialize new swap file
   command: "mkswap {{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
@@ -26,3 +26,5 @@
     passno: "0"
     state:  "present"
 
+- name: Saving the new swap ID into cur file
+  copy: content="{{ swapfile_size_mb }}" dest="{{ swapfile_base_dir }}/cur"

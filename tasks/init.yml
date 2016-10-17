@@ -3,23 +3,28 @@
   file: path="{{ swapfile_base_dir }}/" state=directory
   changed_when: false
 
-- name: Ensure swap caddy for H-A transitions
+- name: Ensure swap curfile for H-A transitions
   file: path="{{ swapfile_base_dir }}/cur" state=touch
   changed_when: false
 
-- name: Getting current data about swaps
-  stat: path="{{ swapfile_base_dir }}/cur"
-  register: swapfile_initial_state
+- name: Fetching current swap file contents
+  command: "cat {{ swapfile_base_dir }}/cur"
+  register: swapfile_cur_id_orig
   changed_when: false
 
-- name: Fetching current swap file ID
-  command: "cat {{ swapfile_base_dir }}/cur"
+- name: Postprocess current swap file ID
+  set_fact:
+    swapfile_cur_id: "{{ swapfile_cur_id_orig.stdout|int }}"
+
+- name: Looking past swapfile state
+  stat: path="{{ swapfile_base_dir }}/{{ swapfile_cur_id }}"
   register: swapfile_cur
-  changed_when: false
+
+- name: Looking current swapfile state
+  stat: path="{{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
+  register: swapfile_new
 
 - name: Looking which current swapfile used
-  set_fact: swapfile_changed="{{ swapfile_cur.stdout|int != swapfile_size_mb|int }}"
-
-- name: Looking if current swapfile ready
-  stat: path="{{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
-  register: swapfile_ready
+  set_fact:
+    swapfile_changed: "{{ swapfile_cur_id|int != swapfile_size_mb|int }}"
+    swapfile_existed: "{{ swapfile_cur.stat.exists }}"

@@ -3,9 +3,9 @@
   become: true
 
 - include: alloc.yml
-  when: "{{ (swapfile_changed or swapfile_ready.stat.exists == false) and swapfile_size_mb|int > 0 }}"
+  when: "{{ swapfile_changed or not swapfile_existed }}"
   become: true
 
 - include: free.yml
-  when: "{{ (swapfile_changed and ((swapfile_cur.stdout|int == 0 or swapfile_initial_state.stat.exists == true) or (swapfile_size_mb|int == 0 and swapfile_cur.stdout|int != 0))) }}"
+  when: "{{ swapfile_changed and swapfile_existed }}"
   become: true

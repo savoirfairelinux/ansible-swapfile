@@ -1,23 +1,15 @@
 ---
-- name: Saving the new swap ID into cur file
-  copy: content="{{ swapfile_size_mb }}" dest="{{ swapfile_base_dir }}/cur"
-
 - name: Disable older swap file
-  shell: "swapoff {{ swapfile_base_dir }}/{{ swapfile_cur.stdout|int }}"
-  ignore_errors: True
-  when: "{{ swapfile_cur.stdout|int != 0 }}"
+  shell: "swapoff {{ swapfile_base_dir }}/{{ swapfile_cur_id }}"
 
 - name: Remove older swap file from /etc/fstab
   mount:
-    src:    "{{ swapfile_base_dir }}/{{ swapfile_cur.stdout|int }}"
-    name:   "swap{{ swapfile_cur.stdout|int }}"
+    src:    "{{ swapfile_base_dir }}/{{ swapfile_cur_id }}"
+    name:   "swap{{ swapfile_cur_id }}"
     fstype: "swap"
     state:  "absent"
 
 - name: Remove older swap file
   file:
-    path: "{{ swapfile_base_dir }}/{{ swapfile_cur.stdout|int }}"
+    path: "{{ swapfile_base_dir }}/{{ swapfile_cur_id }}"
     state: "absent"
-  ignore_errors: True
-  when: "{{ swapfile_cur.stdout|int != 0 }}"
-
