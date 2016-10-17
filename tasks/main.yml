@@ -1,16 +1,13 @@
 ---
 - include: init.yml
   become: true
-  become_user: root
 
 - include: alloc.yml
   when: "{{ (swapfile_changed or swapfile_ready.stat.exists == false) and swapfile_size_mb|int > 0 }}"
   become: true
-  become_user: root
 
 - include: free.yml
   when: "{{ (swapfile_changed and ((swapfile_caddy_value.stdout|int == 0 or swapfile_initial_state.stat.exists == true) or (swapfile_size_mb|int == 0 and swapfile_caddy_value.stdout|int != 0))) }}"
   become: true
-  become_user: root
 
 
