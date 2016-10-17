@@ -5,7 +5,7 @@
 - name: Disable older swap file
   shell: "swapoff {{ swapfile_base_dir }}/{{ swapfile_cur.stdout|int }}"
   ignore_errors: True
-  when: "{{ swapfile_caddy_value.stdout|int != 0 }}"
+  when: "{{ swapfile_cur.stdout|int != 0 }}"
 
 - name: Remove older swap file from /etc/fstab
   mount:
@@ -19,5 +19,5 @@
     path: "{{ swapfile_base_dir }}/{{ swapfile_cur.stdout|int }}"
     state: "absent"
   ignore_errors: True
-  when: "{{ swapfile_caddy_value.stdout|int != 0 }}"
+  when: "{{ swapfile_cur.stdout|int != 0 }}"
 

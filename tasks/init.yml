@@ -12,11 +12,6 @@
   register: swapfile_initial_state
   changed_when: false
 
-- name: Fetching current swap caddy
-  command: "cat {{ swapfile_base_dir }}/cur"
-  register: swapfile_caddy_value
-  changed_when: false
-
 - name: Fetching current swap file ID
   command: "cat {{ swapfile_base_dir }}/cur"
   register: swapfile_cur
