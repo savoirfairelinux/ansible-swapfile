@@ -19,7 +19,7 @@
 - name: Adding new swap file in /etc/fstab
   mount:
     src:    "{{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
-    name:   "none"
+    name:   "swap{{ swapfile_size_mb }}"
     fstype: "swap"
     opts:   "sw,nofail,pri=-1"
     dump:   "0"
