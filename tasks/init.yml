@@ -1,24 +1,24 @@
 ---
 - name: Ensure swap directory for H-A transitions
-  file: path={{ swapfile_base_dir }}/ state=directory
+  file: path="{{ swapfile_base_dir }}/" state=directory
   changed_when: false
 
 - name: Ensure swap caddy for H-A transitions
-  file: path={{ swapfile_base_dir }}/cur state=touch
+  file: path="{{ swapfile_base_dir }}/cur" state=touch
   changed_when: false
 
 - name: Getting current data about swaps
-  stat: path={{ swapfile_base_dir }}/cur
+  stat: path="{{ swapfile_base_dir }}/cur"
   register: swapfile_initial_state
   changed_when: false
 
 - name: Fetching current swap caddy
-  command: cat {{ swapfile_base_dir }}/cur
+  command: "cat {{ swapfile_base_dir }}/cur"
   register: swapfile_caddy_value
   changed_when: false
 
 - name: Fetching current swap file ID
-  command: cat {{ swapfile_base_dir }}/cur
+  command: "cat {{ swapfile_base_dir }}/cur"
   register: swapfile_cur
   changed_when: false
 
@@ -26,5 +26,5 @@
   set_fact: swapfile_changed="{{ swapfile_cur.stdout|int != swapfile_size_mb|int }}"
 
 - name: Looking if current swapfile ready
-  stat: path={{ swapfile_base_dir }}/{{ swapfile_size_mb }}
+  stat: path="{{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
   register: swapfile_ready

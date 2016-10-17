@@ -1,28 +1,28 @@
 ---
 - name: Create new swap file
-  command: fallocate -l {{ ((1 + swapfile_size_mb|int) * 1024 * 1024) }} {{ swapfile_base_dir }}/{{ swapfile_size_mb }}
+  command: "fallocate -l {{ ((1 + swapfile_size_mb|int) * 1024 * 1024) }} {{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
 
 - name: Initialize new swap file
-  command: mkswap {{ swapfile_base_dir }}/{{ swapfile_size_mb }}
+  command: "mkswap {{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
 
 - name: Enforce permissions of new swap file
   file:
     path: "{{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
-    state: 'file'
-    owner: 'root'
-    group: 'root'
-    mode: '0600'
+    state: "file"
+    owner: "root"
+    group: "root"
+    mode: "0600"
 
 - name: Enable new swap file
-  command: swapon {{ swapfile_base_dir }}/{{ swapfile_size_mb }}
+  command: "swapon {{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
 
 - name: Adding new swap file in /etc/fstab
   mount:
-    src: '{{ swapfile_base_dir }}/{{ swapfile_size_mb }}'
-    name:   'none'
-    fstype: 'swap'
-    opts:   'sw,nofail,pri=-1'
-    dump:   '0'
-    passno: '0'
-    state:  'present'
+    src:    "{{ swapfile_base_dir }}/{{ swapfile_size_mb }}"
+    name:   "none"
+    fstype: "swap"
+    opts:   "sw,nofail,pri=-1"
+    dump:   "0"
+    passno: "0"
+    state:  "present"
 

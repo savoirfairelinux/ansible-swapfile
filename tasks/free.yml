@@ -1,15 +1,15 @@
 ---
 - name: Saving the new swap ID into cur file
-  copy: content="{{ swapfile_size_mb }}" dest={{ swapfile_base_dir }}/cur
+  copy: content="{{ swapfile_size_mb }}" dest="{{ swapfile_base_dir }}/cur"
 
 - name: Disable older swap file
-  shell: swapoff {{ swapfile_base_dir }}/{{ swapfile_cur.stdout|int }}
+  shell: "swapoff {{ swapfile_base_dir }}/{{ swapfile_cur.stdout|int }}"
   ignore_errors: True
   when: "{{ swapfile_caddy_value.stdout|int != 0 }}"
 
 - name: Remove swap files
   file:
-    path: '{{ swapfile_base_dir }}/{{ swapfile_cur.stdout|int }}'
-    state: 'absent'
+    path: "{{ swapfile_base_dir }}/{{ swapfile_cur.stdout|int }}"
+    state: "absent"
   ignore_errors: True
   when: "{{ swapfile_caddy_value.stdout|int != 0 }}"
