@@ -1,11 +1,8 @@
 ---
 - include: init.yml
-  become: true
 
 - include: alloc.yml
   when: "{{ swapfile_changed or not swapfile_existed }}"
-  become: true
 
 - include: free.yml
   when: "{{ swapfile_changed and swapfile_existed }}"
-  become: true
