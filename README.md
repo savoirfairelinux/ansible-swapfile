@@ -22,6 +22,14 @@ When you change the swap file size, while transferring swap pages into the new o
 
 If you want to change the swap file size, we do recommend to wait when the server's load is relatively low.
 
+System requirements
+------------
+
+* Any Linux-family operating system (Debian, CentOS etc..)
+* Ansible 2.0+ installed on the host
+* Vagrant 1.8+ (only needed for local deployments)
+* sflvault (needed to fetch secrets)
+
 
 Installation procedure
 ------------
