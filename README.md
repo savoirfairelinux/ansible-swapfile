@@ -26,9 +26,7 @@ System requirements
 ------------
 
 * Any Linux-family operating system (Debian, CentOS etc..)
-* Ansible 2.0+ installed on the host
-* Vagrant 1.8+ (only needed for local deployments)
-* sflvault (needed to fetch secrets)
+* Ansible 2.0+ installed on the deployment host
 
 
 Installation procedure
