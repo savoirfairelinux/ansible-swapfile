@@ -2,7 +2,7 @@
 - include: init.yml
 
 - include: alloc.yml
-  when: "{{ swapfile_changed or not swapfile_existed }}"
+  when: swapfile_changed or not swapfile_existed
 
 - include: free.yml
-  when: "{{ swapfile_changed and swapfile_existed }}"
+  when: swapfile_changed and swapfile_existed
